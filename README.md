@@ -1,0 +1,1 @@
+# Aplikacja-do-przetwarzania-transakcji-walutowych
