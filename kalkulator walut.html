@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+	body{
+    margin: 0;
+    font-family: sans-serif;
+}
+ 
+header,footer,aside{
+    display: block;
+}
+ 
+h1{
+    color: white;
+    text-align: center;
+}
+ 
+label{
+    width: 450px;
+    display: block; 
+}
+ 
+input{
+    width: 200px;
+}
+ 
+table{
+    width: 460px; 
+     max-height: 580px;
+    border-collapse: collapse;
+    
+    
+}
+
+
+ 
+th{
+    background: 	#808080;
+}
+ 
+th,td{
+    border: 2px solid black;
+    padding: 10px;
+}
+ 
+.container{
+    width: 1000px;
+    margin: 0 auto;
+}
+ 
+.headerbar{
+    width: 1000px;
+    float: left;
+}
+ 
+.headerbar.top{
+    background: #32CD32;
+    min-height: 100px;
+ border: 10%;
+}
+ 
+.headerbar.bottom{
+    background: 	#32CD32;
+    min-height: 60px;
+}
+ 
+.leftbar{
+    width: 500px;
+    background: 	#808080;
+    min-height: 600px;
+    float: left;
+}
+ 
+.rightbar{
+    width: 480px;
+    background: #D3D3D3;
+    min-height: 580px;
+    max-height: 580px;
+    float: left;
+    padding: 10px;
+}
+
+
+
+
+ button
+ {
+ 	font-size: 14px;
+ 	padding:5px;
+ 	border-radius: 5px;
+ 	background: 	#32CD32;
+ 	color: #ffffff;
+ 	float: left;
+ 	width: 110px;
+ }
+
+</style>
+</head>
+<body>
+	 <body>
+        <div class="container">
+            <header class="headerbar top"><h1>Przelewy walutowe</h1></header>
+            <aside class="leftbar">
+                <div class>
+                    <fieldset>
+                        <label for="eeuro"><span>Kurs Euro</span></label>
+                        <input type="text" value="4,27983" id="eeuro" disabled>
+                    </fieldset>
+                    <fieldset>
+                        <label for="name"><span>Nazwa</span></label>
+                        <input type="text" placeholder="wpisz nazwe" id="name">
+                    </fieldset>
+                    <fieldset>
+                        <label for="euro">EURO</label>
+                        <input type="text" placeholder="wprowadz kwote w euro" id="euro">
+                    </fieldset>
+                    <fieldset>
+                        <label for="submit"> </label>
+                        <button id="submit" onclick="exchange()">Przelicz</button>
+                    </fieldset>
+                 
+                    <fieldset>
+                        <label for="pln">PLN</label>
+                        <input type="text" id="pln" >
+                    </fieldset>
+              
+                </div>
+            </aside>
+            <aside class="rightbar">
+             <div style="overflow-y: scroll; max-height:560px">
+                <table id="regtable">
+                    <thead>
+                        <tr>
+                        	<th>Id</th>
+                            <th>Tytułem</th>
+                            <th>Kurs</th>
+                            <th>EURO</th>
+                            <th>PLN</th>
+                            <th>Opcje</th>
+                            
+                          
+                        </tr>
+                    </thead>
+                  
+                </table>
+            </div>
+            </aside>
+            <footer class="headerbar bottom"></footer>
+        </div>
+       <script type="text/javascript">
+
+       	
+       	let currencyArray=[];
+       	 	
+       	 let biggestamount=[];
+
+        		
+
+       	 function exchange() {
+ 				let kurs=4.27983;
+                let name = document.querySelector("#name").value;
+                let euro= document.querySelector("#euro").value;
+                let pln= document.getElementById("pln");
+                
+                pln.value= Math.abs(Math.round((euro*kurs) * 100)/100);
+
+                let exchanged=pln.value;
+                
+                var id=0;
+
+                
+                
+                
+                
+                biggestamount.push(exchanged);
+                let Money={name:name,euro:euro,kurs:kurs,exchanged:exchanged,id:id};
+                currencyArray.push(Money);
+ 				
+ 				createCells(name,kurs,euro,exchanged,id);
+ 				
+              
+            }
+          
+                
+            
+
+          
+            
+
+            function createCells(name,kurs,euro,exchanged,id)
+            {
+            	let table = document.getElementById("regtable");
+                let row = table.insertRow();
+                let idCell=row.insertCell(0);
+                let nameCell = row.insertCell(1);
+                let currencyCell=row.insertCell(2);
+                let euroCell = row.insertCell(3);
+                let plnCell = row.insertCell(4);
+                let optionCell=row.insertCell(5);
+               
+               for (i=0; i<=currencyArray.length; i++)
+            	{
+            			id=i;
+            	}
+  				idCell.innerHTML=id;
+                nameCell.innerHTML = name;
+                currencyCell.innerHTML=kurs;
+                euroCell.innerHTML =euro ;
+             	plnCell.innerHTML = exchanged;
+                
+             	
+
+             	var delbtn=document.createElement("button");
+            	delbtn.innerHTML="Usun";
+            	optionCell.appendChild(delbtn);	
+            	optionCell.addEventListener("click",remove);
+            	delbtn.value=id;
+                delbtn.style.background="red";
+
+                
+               let max=biggestamount[0];
+               for (let i=1; i<biggestamount.length; i++){
+                    max=(biggestamount[i]>max)? biggestamount[i]:max;
+                    console.log(max);
+                    
+                }
+        
+                
+
+              //table.style.overflow = "scroll";
+
+            
+            	
+            }
+
+           function remove(event)
+            	{
+            var eventTarget=event.target;
+            var rowId=eventTarget.value;
+
+            for(var i=0;i<currencyArray.length;i++){
+                if(currencyArray[i].id==rowId){
+                    currencyArray.splice(i,1);
+                }
+            }
+
+            eventTarget.parentElement.parentElement.remove();
+
+
+        }
+            
+       </script>
+  
+
+</body>
+</html>
